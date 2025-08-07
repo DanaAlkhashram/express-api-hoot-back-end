@@ -86,5 +86,29 @@ router.delete('/:hootId', async (req, res) => {
   }
 });
 
+// ========= COMMENTS CONTROLLERS =========
+
+
+// CREATE A COMMENT
+router.post('/:hootId/comments', async (req, res) => {
+	try {
+		req.body.author = req.user._id
+		const hoot = await Hoot.findById(req.params.hootId)
+		hoot.comments.push(req.body)
+		await hoot.save()
+
+		// Find the newly created comment:
+		const newComment = hoot.comments[hoot.comments.length - 1]
+
+		newComment._doc.author = req.user
+
+		// Respond with the newComment:
+		res.status(201).json(newComment)
+	} catch (error) {
+		res.status(500).json(error)
+	}
+})
+
+
 
 module.exports = router;
