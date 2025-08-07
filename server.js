@@ -13,6 +13,8 @@ const logger = require('morgan');
 const testJwtRouter = require('./controllers/test-jwt');
 const authRouter = require('./controllers/auth');
 const userRouter = require('./controllers/users');
+const hootsRouter = require('./controllers/hoot');
+
 
 // Middleware
 const verifyToken = require('./middleware/verify-token');
@@ -34,8 +36,11 @@ app.use('/auth', authRouter);
 app.use('/test-jwt', testJwtRouter);
 
 // PROTECTED ROUTES
-app.use(verifyToken);
+// app.use(verifyToken); WE USE TO "log in for SOME hoots (keep verifyToken in hoots.js above routes)"
+
 app.use('/users', userRouter);
+app.use('/hoots', hootsRouter);
+
 
 app.listen(3000, () => {
   console.log('The express app is ready!');
